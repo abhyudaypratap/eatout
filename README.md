@@ -24,4 +24,4 @@ Add `.env` files having relative config into `eatout_app/settings/` directory.
 * `source venv/bin/activate`
 
 ### install requirements
-`pip install -r requirements/common.txt`
+`pip install -r requirements/dev.txt`

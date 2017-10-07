@@ -1,0 +1,2 @@
+-r common.txt
+django-jet==1.0.6
