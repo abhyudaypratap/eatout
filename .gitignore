@@ -1,0 +1,10 @@
+
+### Python ###
+__pycache__/
+*.py[cod]
+
+# python-dotenv
+.env
+
+# Virtualenv
+venv/
