@@ -54,6 +54,8 @@ THIRD_PARTY_APPS = [
 
 OUR_APPS = [
     'user_profile',
+    'search_api',
+    'restaurant',
 ]
 
 INSTALLED_APPS = ADMIN_APPS + CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -151,3 +153,6 @@ ACCOUNT_UNIQUE_USERNAME = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_LOGOUT_ON_GET = True
+
+# Google Places Api Key
+google_key = os.environ.get('GOOGLE_KEY')
