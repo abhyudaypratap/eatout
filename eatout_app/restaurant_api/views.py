@@ -2,6 +2,8 @@
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
+from .serializers import AddRestaurantSerializer
 from restaurant import search
 
 
@@ -24,3 +26,20 @@ class RestaurantSearchApiView(APIView):
             return Response(result)
         else:
             return Response({"data": "no data send"})
+
+
+class AddRestaurantApiView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        res_data = AddRestaurantSerializer(data=request.data)
+        if res_data.is_valid():
+            res_data.save()
+            return Response(res_data.data, status=status.HTTP_200_OK)
+
+
+# class RestaurantApiView(APIView):
+
+#     def post(self, request, *args, **kwargs):
+
+#         review = request.data.get("coordinates")
+#         user = request

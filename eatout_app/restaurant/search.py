@@ -1,23 +1,38 @@
-"""Google Places Api """
+"""Google Places Api."""
 import re
 import requests
 from settings.common import google_key
 
 
+def get_image_url(ref, h, w):
+    if ref:
+        s_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=" \
+            + str(h) + "&maxwidth=" + str(w) + \
+            "&photoreference=" + ref + "&key=" + google_key
+        im_url = requests.get(s_url).url
+        return im_url
+    else:
+        return ""
+
+
 def crestaurantlist(r_data):
     l_data = []
     restaurant_data = {}
+    image = ""
+    rat = ""
     for data in r_data:
+        if "photos" in data:
+            image = get_image_url(data["photos"][0]["photo_reference"], data[
+                "photos"][0]["height"], data["photos"][0]["width"])
         if "rating" in data:
             rat = data["rating"]
-        else:
-            rat = ""
         restaurant_data = {
             "id": data["id"],
             "name": data["name"],
             "location": data["geometry"]["location"],
             "address": data["vicinity"],
             "rating": rat,
+            "image": image,
         }
         l_data.append(restaurant_data)
     return l_data
@@ -27,6 +42,9 @@ def qrestaurantlist(r_data):
     l_data = []
     restaurant_data = {}
     for data in r_data:
+        if "photos" in data:
+            image = get_image_url(data["photos"][0]["photo_reference"], data[
+                "photos"][0]["height"], data["photos"][0]["width"])
         if "rating" in data:
             rat = data["rating"]
         else:
@@ -37,6 +55,7 @@ def qrestaurantlist(r_data):
             "location": data["geometry"]["location"],
             "address": data["formatted_address"],
             "rating": rat,
+            "image": image,
         }
         l_data.append(restaurant_data)
     return l_data
@@ -63,7 +82,6 @@ def searchbyquery(query, coordinates):
     query = re.sub(r"\s+", '+', query)
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + \
         query + loc + "&opennow=true&types=restaurant&key=" + google_key
-    print url
     search_data = requests.get(url)
     res_list = search_data.json()["results"]
     res_data = qrestaurantlist(res_list)

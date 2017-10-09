@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('user_profile.urls')),
-    url(r'^search/', include('search_api.urls')),
+    url(r'^restaurant/', include('restaurant_api.urls')),
 ]

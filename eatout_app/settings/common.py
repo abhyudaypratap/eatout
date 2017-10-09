@@ -46,6 +46,8 @@ CORE_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -54,7 +56,7 @@ THIRD_PARTY_APPS = [
 
 OUR_APPS = [
     'user_profile',
-    'search_api',
+    'restaurant_api',
     'restaurant',
 ]
 
@@ -155,4 +157,5 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_LOGOUT_ON_GET = True
 
 # Google Places Api Key
+# 1,000 free requests per 24 hour period
 google_key = os.environ.get('GOOGLE_KEY')
