@@ -3,3 +3,5 @@ from django.contrib import admin
 import models
 
 admin.site.register(models.Restaurantdb)
+admin.site.register(models.RestaurantReviews)
+admin.site.register(models.ReviewsComments)
