@@ -9,7 +9,7 @@ from django.core import serializers
 import json
 
 from .serializers import RestaurantSerializer
-from .models import Restaurantdb
+from .models import Restaurantdb, RestaurantReviews, ReviewsComments
 from restaurant import search
 
 
@@ -43,13 +43,27 @@ class AddRestaurantApiView(APIView):
             return Response(res_data.data, status=status.HTTP_200_OK)
 
 
-class RestaurantsDataView(APIView):
+class VistedRestaurantsDataView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         res_data = serializers.serialize("json", Restaurantdb.objects.all())
         return Response(json.loads(res_data), status=status.HTTP_200_OK)
+
+
+class RestaurantDataView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        comments = ReviewsComments.objects.filter(
+            reviews__restaurant__restaurant_id=slug)
+        reviews = RestaurantReviews.objects.filter(restaurant__restaurant_id=slug)
+        com_data = serializers.serialize("json", comments)
+        rev_data = serializers.serialize("json", reviews)
+        data = {"rev": json.loads(rev_data), "com": json.loads(com_data)}
+        return Response(data, status=status.HTTP_200_OK)
 
 # class RestaurantApiView(APIView):
 
