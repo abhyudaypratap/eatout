@@ -12,7 +12,7 @@ from django.urls import reverse
 
 import json
 
-from .serializers import RestaurantSerializer, ReviewsSerializer
+from .serializers import RestaurantSerializer, ReviewsSerializer, CommentsSerializer
 from .models import Restaurantdb
 from restaurant import search
 
@@ -84,6 +84,21 @@ class RestaurantDataView(APIView):
         restaurant = Restaurantdb.objects.get(restaurant_id=slug)
         data = {"restaurant": restaurant}
         return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request, slug):
+        data = request.data.copy()
+        data["registered_user"] = request.user.pk
+        if "comments" in data:
+            rev_data = CommentsSerializer(data=data)
+            if rev_data.is_valid():
+                rev_data.save()
+                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
+        else:
+            data["restaurant"] = slug
+            rev_data = ReviewsSerializer(data=data)
+            if rev_data.is_valid():
+                rev_data.save()
+                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
 
 
 
