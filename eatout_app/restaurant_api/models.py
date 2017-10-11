@@ -9,7 +9,7 @@ class Restaurantdb(models.Model):
     geocode = models.CharField(max_length=225, null=False, blank=False)
     address = models.CharField(max_length=225, null=True, blank=True)
     image_url = models.CharField(max_length=525, null=True, blank=True)
-    visted = models.IntegerField(default=0)
+    visted = models.IntegerField(default=1)
     google_rating = models.CharField(max_length=225, null=True, blank=True)
 
     def __str__(self):

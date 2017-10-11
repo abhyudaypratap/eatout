@@ -41,6 +41,8 @@ def crestaurantlist(r_data):
 def qrestaurantlist(r_data):
     l_data = []
     restaurant_data = {}
+    image = ""
+    rat = ""
     for data in r_data:
         if "photos" in data:
             image = get_image_url(data["photos"][0]["photo_reference"], data[
@@ -81,7 +83,7 @@ def searchbyquery(query, coordinates):
         loc = "&location=" + coordinates
     query = re.sub(r"\s+", '+', query)
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + \
-        query + loc + "&opennow=true&types=restaurant&key=" + google_key
+        query + loc + "&types=restaurant&key=" + google_key
     search_data = requests.get(url)
     res_list = search_data.json()["results"]
     res_data = qrestaurantlist(res_list)

@@ -1,0 +1,104 @@
+{% load static from staticfiles %} {% load i18n %} {% load account %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Visited Restaurants | Eat Out</title>
+    <!-- CORE CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;
+    }
+
+    html {
+        display: table;
+        margin: auto;
+    }
+
+    body {
+        display: table-cell;
+        vertical-align: middle;
+        width: 80%;
+    }
+
+    .margin {
+        margin: 0 !important;
+    }
+    .row .col.s12 {
+    width: 60%;
+    margin-left: 0;
+    }
+
+    .col.s12>.btn {
+        width: 100%;
+    }
+    p.grey-text.text-darken-4.margin {
+    font-size: 25px;
+    }
+     #map {
+        height: 300px;
+        width: 30%;
+       }
+    </style>
+
+</head>
+
+<body>
+<div>
+    {%for restaurant in restaurants%}
+    <div id="profile-page-wall-posts" class="row">
+        <div class="col s12">
+            <!-- medium -->
+            <div id="profile-page-wall-post" class="card">
+                <div class="card-profile-title">
+                    <div class="row">
+                        <div class="col s1">
+                            <img src={{ restaurant.fields.image_url }} alt="" class="square responsive-img valign profile-post-uer-image">
+                        </div>
+                        <div class="col s5">
+                            <a href="http://{{ request.get_host }}/restaurant/display/{{ restaurant.pk }}"><p class="grey-text text-darken-4 margin">{{ restaurant.fields.name }}</p></a>
+                            <span class="grey-text text-darken-1 ultra-small">Address: {{ restaurant.fields.address }}</span>
+                        </div>
+                        <div class="col s5 right-align">
+                            Google Rating: {{ restaurant.fields.google_rating }}
+                        </div>
+                    </div>
+            </div>
+            </div>
+            </div>
+            </div>{% endfor %}
+            </div>
+            <div style="height: 100%; width: 20%; position: absolute; top: 0px; right: 0px; background-color: rgb(229, 227, 223);" id="map"></div>
+    }
+<!-- ================================================
+  Scripts
+================================================ -->
+            <!-- jQuery Library -->
+<script>
+var cor = "{{ restaurant.fields.geocode }}"
+var la = cor.split(",")
+function initMap() {
+    var uluru = { lat: parseFloat(la[0]), lng: parseFloat(la[1]) };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: uluru
+    });
+    var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+    });
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXo2p1vXYi6UQ9Wp0pW_iLEKBC5a345yo&callback=initMap">
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!--materialize js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+</body>
+
+</html>

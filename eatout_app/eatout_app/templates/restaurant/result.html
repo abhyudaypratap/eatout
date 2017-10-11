@@ -1,0 +1,135 @@
+{% load static from staticfiles %} {% load i18n %} {% load account %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Visited Restaurants | Eat Out</title>
+    <!-- CORE CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;
+    }
+
+    html {
+        display: table;
+        margin: auto;
+    }
+
+    body {
+        display: table-cell;
+        vertical-align: middle;
+        width: 80%;
+    }
+    .row .col.s12 {
+    width: 60%;
+    margin-left: 0;
+    }
+
+    .margin {
+        margin: 0 !important;
+    }
+
+    .col.s12>.btn {
+        width: 100%;
+    }
+    p.grey-text.text-darken-4.margin {
+    font-size: 30px;
+    }
+     #map {
+        height: 300px;
+        width: 30%;
+       }
+    </style>
+
+</head>
+
+<body>
+<div>
+    {%for restaurant in result%}
+    <div id="profile-page-wall-posts" class="row">
+        <div class="col s12">
+            <!-- medium -->
+            <div id="profile-page-wall  -post" class="card">
+                <div class="card-profile-title">
+                    <form action={% url 'restaurant:new_restaurant' %} method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col s1">
+                        <input type="input" name="restaurant_id" value="{{ restaurant.id }}" hidden>
+                            <img src="{{ restaurant.image }}" alt="" class="square responsive-img valign profile-post-uer-image"><input type="input" name="image_url" value="{{ restaurant.image }}" hidden>
+                        </div>
+                        <div class="col s4">
+                            <p class="grey-text text-darken-4 margin">{{ restaurant.name }}<input type="input" name="name" value="{{ restaurant.name }}" hidden></p>
+                            <span class="grey-text text-darken-1 ultra-small">Address: {{ restaurant.address }}
+                            <input type="input" name="address" value="{{ restaurant.address }}" hidden>
+                            </span>
+                        </div>
+                        <div class="col s5 right-align">
+                            Google Rating: {{ restaurant.rating }}
+                            <input type="input" name="google_rating" value="{{ restaurant.rating }}" hidden>
+                            <input type="input" name="geocode" value="{{restaurant.location.lat}},{{restaurant.location.lng}}" hidden>
+                        </div>
+                        <div class="col s2">
+                        <button type="submit" name="store">ADD<i class="mdi-content-add-box"></i></button>
+                    </div>
+                    </div></form>
+            </div>
+            </div>
+            </div>
+            </div>{% endfor %}</div>
+            <div style="height: 100%; width: 20%; position: absolute; top: 0px; right: 0px; background-color: rgb(229, 227, 223);" id="map"></div>
+<!-- ================================================
+  Scripts
+================================================ -->
+            <!-- jQuery Library -->
+    <script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: {lat: 28.5800065, lng: 77.3177433}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = [];
+        i=0
+        {%for restaurant in result%}
+           var lt=parseFloat({{restaurant.location.lat}})
+           var ln=parseFloat({{restaurant.location.lng}})
+
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lt, ln),
+            label: labels[i % labels.length]
+        });
+        markers.push(marker);
+        i=i+1
+        {% endfor %}
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXo2p1vXYi6UQ9Wp0pW_iLEKBC5a345yo&callback=initMap">
+    </script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!--materialize js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+</body>
+
+</html>
