@@ -24,6 +24,7 @@ class Restaurantdb(models.Model):
 class RestaurantReviews(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     reviews = models.CharField(max_length=3000, null=False, blank=False)
+    visted = models.IntegerField(default=0, null=True, blank=True)
     registered_user = models.ForeignKey(User, related_name='reviews', null=True)
     restaurant = models.ForeignKey(Restaurantdb, related_name='reviews', null=True)
     user_rating = models.CharField(max_length=225, null=True, blank=True)
@@ -39,6 +40,18 @@ class ReviewsComments(models.Model):
     registered_user = models.ForeignKey(User, related_name='comments', null=True)
     reviews = models.ForeignKey(RestaurantReviews, related_name='comments', null=True)
     comments = models.CharField(max_length=3000)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """Return email address."""
+        return str(self.id)
+
+
+class VisitedRes(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    visted = models.IntegerField(default=0, null=True, blank=True)
+    registered_user = models.ForeignKey(User, related_name='visited', null=True)
+    restaurant = models.ForeignKey(Restaurantdb, related_name='visited', null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 
 from .serializers import RestaurantSerializer, ReviewsSerializer, CommentsSerializer
-from .models import Restaurantdb
+from .models import Restaurantdb, VisitedRes
 from restaurant import search
 
 
@@ -72,9 +72,29 @@ class VistedRestaurantsDataView(APIView):
     template_name = 'restaurant/visited.html'
 
     def get(self, request):
-        res_data = serializers.serialize("json", Restaurantdb.objects.all())
-        restaurants = {"restaurants": json.loads(res_data)}
-        return Response(restaurants, status=status.HTTP_200_OK)
+        data = Restaurantdb.objects.filter(visted__gt=0)
+        if data:
+            res_data = serializers.serialize("json", data)
+            restaurants = {"restaurants": json.loads(res_data)}
+            return Response(restaurants, status=status.HTTP_200_OK)
+        else:
+            return Response(restaurants, status=status.HTTP_200_OK)
+
+
+class VistedRestaurantsStoreView(LoginRequiredMixin, APIView):
+    renderer_classes = [TemplateHTMLRenderer, ]
+    template_name = 'restaurant/visited.html'
+
+    def post(self, request, slug):
+        vire = VisitedRes.objects.filter(registered_user=request.user.pk)
+        data = request.data.copy()
+        data["registered_user"] = request.user.pk
+        data["restaurant"] = slug
+        if "comments" in data:
+            rev_data = CommentsSerializer(data=data)
+            if rev_data.is_valid():
+                rev_data.save()
+                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
 
 
 class RestaurantsListView(APIView):

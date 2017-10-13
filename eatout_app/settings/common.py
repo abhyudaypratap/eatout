@@ -116,6 +116,9 @@ STATIC_ROOT = os.path.join(APP_DIR, 'collected-static')
 STATICFILES_DIRS = (
     os.path.join(APP_DIR, 'static'),)
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(APP_DIR, 'media')
+
 AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',

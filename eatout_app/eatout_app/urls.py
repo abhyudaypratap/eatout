@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf.urls.static import static
+
+from settings import dev
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
@@ -22,4 +25,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('user_profile.urls')),
     url(r'^restaurant/', include('restaurant_api.urls')),
-]
+] + static(dev.MEDIA_URL, document_root=dev.MEDIA_ROOT)

@@ -68,13 +68,13 @@
         <div class="card-profile-title">
             <div class="row">
                 <div class="col s1">
-                    <img src={{ restaurant.image_url }} alt="" class="square responsive-img valign profile-post-uer-image">
+                    <img src={{ user.pk }} alt="" class="square responsive-img valign profile-post-uer-image">
                 </div>
                 <div class="col s2 right-align">
-                    <p class="grey-text text-darken-4 margin">{{ restaurant.name }}</p>
-                    <span class="grey-text text-darken-1 ultra-small">Address: {{ restaurant.address }}</span>
+                    <p class="grey-text text-darken-4 margin">{{ user.user.username }}</p>
+                    <span class="grey-text text-darken-1 ultra-small">Email: {{ user.user.email }}</span>
                 </div>
-                <!--<div class="col s1" id="map"></div>-->
+                <!--<div class="col s1" id="map"></div>
                 <div class="col s7 right-align">
                     Google Rating: {{ restaurant.google_rating }}
                     <h3><a href="#"><i class="mdi-action-thumb-down"></i></a></h3>
@@ -82,24 +82,19 @@
                 {% csrf_token %}
                 <button type="submit" name="store">Visited</button>
             </form>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
+    <h4>Reviews</h4>
+    {%for review in user.user.reviews.all %}
     <div id="profile-page-wall-post" class="card">
         <div class="card-action row">
-            <form action="." method="POST">
-                {% csrf_token %}
-                <input type="text" name="reviews" placeholder="new review" />
-                <button type="submit" name="store">New review</button>
-            </form>
-        </div>
-    </div>
-    <div id="profile-page-wall-post" class="card">
-        <div class="card-action row">
-            <h4>Reviews</h4>
-            {%for review in restaurant.reviews.all %}
-            <div><h5>{{ review.reviews }}</h5></div>
+            
+
+            
+            <h5>{{ review.restaurant.name }}</h5>
+            <div><h6>{{ review.reviews }}</h6></div>
             <div id="comments"> 
     <details>
         <summary>
@@ -111,39 +106,16 @@
         {{ comment.comments }}</p>
         </div>
                 {%endfor%}</details>
-                <form action="." method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="comments" placeholder="new comment" />
-                    <input type="text" name="reviews" value="{{review.id}}" hidden />
-                    <button type="submit" name="store">New comment</button>
-                </form>
             </div>
-            {% endfor %}
+            
 
     </div>
-    </div>
+
+    </div>{% endfor %}
     <!-- ================================================
   Scripts
 ================================================ -->
     <!-- jQuery Library -->
-    <script>
-    var cor = "{{ restaurant.geocode }}"
-    var la = cor.split(",")
-
-    function initMap() {
-        var uluru = { lat: parseFloat(la[0]), lng: parseFloat(la[1]) };
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            center: uluru
-        });
-        var marker = new google.maps.Marker({
-            position: uluru,
-            map: map
-        });
-    }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXo2p1vXYi6UQ9Wp0pW_iLEKBC5a345yo&callback=initMap">
-    </script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!--materialize js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>

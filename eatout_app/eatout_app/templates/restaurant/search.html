@@ -36,6 +36,15 @@ body {
         <a class="navbar-brand" href="{% url 'restaurant:restaurants_list'%}">Restaurants </a>
     <a class="navbar-brand" href="{% url 'restaurant:visited_restaurants'%}">Visited </a>
   </div>
+  <div class="navbar-collapse collapse navbar-warning-collapse"><ul class="nav navbar-nav navbar-right">
+      
+      {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'account_logout'%}">{{request.user.username}}</a></li>
+                        <li><a href="{% url 'account_logout'%}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login'%}">Sigin</a></li>
+                        {% endif %}
+    </ul></div>
 </div>
 <div class="container">
 
