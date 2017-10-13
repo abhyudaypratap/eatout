@@ -10,7 +10,7 @@ class Restaurantdb(models.Model):
     geocode = models.CharField(max_length=500, null=True, blank=True)
     address = models.CharField(max_length=225, null=True, blank=True)
     image_url = models.CharField(max_length=525, null=True, blank=True)
-    visted = models.IntegerField(default=1)
+    visted = models.IntegerField(default=0)
     user_rated = models.IntegerField(default=1)
     google_rating = models.CharField(max_length=225, null=True, blank=True)
     contact = models.CharField(max_length=13, null=True, blank=True)
@@ -31,7 +31,7 @@ class RestaurantReviews(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """Return email address."""
+        """Return review Id."""
         return str(self.id)
 
 
@@ -43,7 +43,7 @@ class ReviewsComments(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """Return email address."""
+        """Return comment Id."""
         return str(self.id)
 
 
@@ -55,5 +55,5 @@ class VisitedRes(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """Return email address."""
+        """Return  Id."""
         return str(self.id)

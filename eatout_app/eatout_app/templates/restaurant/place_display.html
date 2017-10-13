@@ -68,7 +68,7 @@
         <div class="card-profile-title">
             <div class="row">
                 <div class="col s1">
-                    <img src={{ restaurant.image_url }} alt="" class="square responsive-img valign profile-post-uer-image">
+                    <img src="{{ restaurant.image_url }}" alt="" class="square responsive-img valign profile-post-uer-image">
                 </div>
                 <div class="col s2 right-align">
                     <p class="grey-text text-darken-4 margin">{{ restaurant.name }}</p>
@@ -77,10 +77,16 @@
                 <!--<div class="col s1" id="map"></div>-->
                 <div class="col s7 right-align">
                     Google Rating: {{ restaurant.google_rating }}
-                    <h3><a href="#"><i class="mdi-action-thumb-down"></i></a></h3>
-                   <form action="." method="POST">
+                    
+                <form action="{% url 'restaurant:vote_down' %}" method="POST">
+                {% csrf_token %}
+                <h3><a href="#" onclick="$(this).closest('form').submit()"><i class="mdi-action-thumb-down"></i></a></h3>
+                <input type="text" name="r_id" value="{{restaurant.pk}}" hidden />
+            </form>
+                <form action="{% url 'restaurant:visited_restaurant_save' %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" name="store">Visited</button>
+                <input type="text" name="r_id" value="{{restaurant.pk}}" hidden />
             </form>
                 </div>
             </div>

@@ -43,15 +43,6 @@ class RestaurantSearchApiView(APIView):
             return Response({"data": "no data send"})
 
 
-class SearchResultApiView(APIView):
-    """Restaurant Search Result Api."""
-    # renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
-    # template_name = 'restaurant/result.html'
-
-    def get(self, request, *args):
-        return Response(status=status.HTTP_200_OK)
-
-
 class AddRestaurantApiView(APIView):
 
     def post(self, request, *args, **kwargs):
@@ -66,8 +57,6 @@ class AddRestaurantApiView(APIView):
 
 
 class VistedRestaurantsDataView(APIView):
-    # authentication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer, ]
     template_name = 'restaurant/visited.html'
 
@@ -79,22 +68,6 @@ class VistedRestaurantsDataView(APIView):
             return Response(restaurants, status=status.HTTP_200_OK)
         else:
             return Response(restaurants, status=status.HTTP_200_OK)
-
-
-class VistedRestaurantsStoreView(LoginRequiredMixin, APIView):
-    renderer_classes = [TemplateHTMLRenderer, ]
-    template_name = 'restaurant/visited.html'
-
-    def post(self, request, slug):
-        vire = VisitedRes.objects.filter(registered_user=request.user.pk)
-        data = request.data.copy()
-        data["registered_user"] = request.user.pk
-        data["restaurant"] = slug
-        if "comments" in data:
-            rev_data = CommentsSerializer(data=data)
-            if rev_data.is_valid():
-                rev_data.save()
-                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
 
 
 class RestaurantsListView(APIView):
@@ -123,10 +96,37 @@ class RestaurantDataView(LoginRequiredMixin, APIView):
             rev_data = CommentsSerializer(data=data)
             if rev_data.is_valid():
                 rev_data.save()
-                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
+                return HttpResponseRedirect(reverse("restaurant:restaurant_info", args=[slug]))
         else:
             data["restaurant"] = slug
             rev_data = ReviewsSerializer(data=data)
             if rev_data.is_valid():
                 rev_data.save()
-                return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
+                return HttpResponseRedirect(reverse("restaurant:restaurant_info", args=[slug]))
+
+
+class VistedRestaurantsStoreView(LoginRequiredMixin, APIView):
+    renderer_classes = [TemplateHTMLRenderer, ]
+    template_name = 'restaurant/visited.html'
+
+    def post(self, request):
+        res_data = Restaurantdb.objects.get(
+            restaurant_id=request.data.get("r_id"))
+        data = VisitedRes.objects.get_or_create(
+            registered_user=request.user, restaurant=res_data, defaults={"visted": 1})
+        if not data[1]:
+            data[0].visted = data[0].visted + 1
+            res_data.visted = res_data.visted + 1
+            res_data.save()
+            data[0].save()
+        return HttpResponseRedirect(reverse("restaurant:restaurant_info", args=[request.data.get("r_id")]))
+
+
+class VoteDownView(LoginRequiredMixin, APIView):
+
+    def post(self, request):
+        res_data = Restaurantdb.objects.get(
+            restaurant_id=request.data.get("r_id"))
+        res_data.user_rated = 0
+        res_data.save()
+        return HttpResponseRedirect(reverse("restaurant:restaurant_info", args=[request.data.get("r_id")]))
