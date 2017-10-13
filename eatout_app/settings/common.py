@@ -58,6 +58,7 @@ OUR_APPS = [
     'user_profile',
     'restaurant_api',
     'restaurant',
+    'dine_app',
 ]
 
 INSTALLED_APPS = ADMIN_APPS + CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
