@@ -21,5 +21,5 @@ DATABASES = {
 
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_REDIRECT_URL = "/restaurant/list/"
+LOGIN_REDIRECT_URL = "/restaurant/search/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/restaurant/list/"
