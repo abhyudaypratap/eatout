@@ -1,5 +1,4 @@
 """View for Search Api."""
-from rest_framework.renderers import JSONRenderer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -34,6 +33,7 @@ class RestaurantSearchApiView(APIView):
 
 
 class AddRestaurantApiView(APIView):
+    """Api to  add a new restautrant to our database."""
 
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -47,6 +47,7 @@ class AddRestaurantApiView(APIView):
 
 
 class VistedRestaurantsApiDataView(APIView):
+    """List out all the Restaurant visited by the user Api."""
 
     def get(self, request):
         data = Restaurantdb.objects.filter(visted__gt=0, user_rated__gt=0)
@@ -59,6 +60,7 @@ class VistedRestaurantsApiDataView(APIView):
 
 
 class RestaurantsListApiView(APIView):
+    """Api to display all the restaurant added into database by user."""
 
     def get(self, request):
         res_data = serializers.serialize(
@@ -68,6 +70,8 @@ class RestaurantsListApiView(APIView):
 
 
 class RestaurantDataApiView(APIView):
+    """Api outputs all the data about the restaurant stored in database
+    """
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
@@ -78,6 +82,7 @@ class RestaurantDataApiView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     def post(self, request, slug):
+        # stores user reviews and comments
         data = request.data.copy()
         data["registered_user"] = request.user.pk
         if "comments" in data:
@@ -94,6 +99,7 @@ class RestaurantDataApiView(APIView):
 
 
 class VistedRestaurantsStoreApiView(APIView):
+    """Record the user feedback of visiting the restaurant."""
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
@@ -114,6 +120,9 @@ class VistedRestaurantsStoreApiView(APIView):
 
 
 class VoteDownApiView(APIView):
+    """Voting down the restaurant resulting user will not find the
+    restaurants again in the list
+    ."""
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
