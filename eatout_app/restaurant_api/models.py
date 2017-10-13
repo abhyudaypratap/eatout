@@ -1,17 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 import uuid
 
 
 class Restaurantdb(models.Model):
     restaurant_id = models.CharField(max_length=225, primary_key=True)
     name = models.CharField(max_length=225, null=False, blank=False)
-    geocode = models.CharField(max_length=225, null=False, blank=False)
+    geocode = models.CharField(max_length=500, null=True, blank=True)
     address = models.CharField(max_length=225, null=True, blank=True)
     image_url = models.CharField(max_length=525, null=True, blank=True)
     visted = models.IntegerField(default=1)
     user_rated = models.IntegerField(default=1)
     google_rating = models.CharField(max_length=225, null=True, blank=True)
+    contact = models.CharField(max_length=13, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         """Return Restaurant Id."""
@@ -20,10 +23,11 @@ class Restaurantdb(models.Model):
 
 class RestaurantReviews(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    reviews = models.CharField(max_length=1000, null=False, blank=False)
+    reviews = models.CharField(max_length=3000, null=False, blank=False)
     registered_user = models.ForeignKey(User, related_name='reviews', null=True)
     restaurant = models.ForeignKey(Restaurantdb, related_name='reviews', null=True)
-    google_rating = models.CharField(max_length=225, null=True, blank=True)
+    user_rating = models.CharField(max_length=225, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         """Return email address."""
@@ -34,7 +38,8 @@ class ReviewsComments(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     registered_user = models.ForeignKey(User, related_name='comments', null=True)
     reviews = models.ForeignKey(RestaurantReviews, related_name='comments', null=True)
-    comments = models.CharField(max_length=1000)
+    comments = models.CharField(max_length=3000)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         """Return email address."""

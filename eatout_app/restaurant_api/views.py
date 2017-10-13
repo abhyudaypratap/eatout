@@ -9,6 +9,7 @@ from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import json
 
@@ -61,7 +62,7 @@ class AddRestaurantApiView(APIView):
             res_data = RestaurantSerializer(data=data)
             if res_data.is_valid():
                 res_data.save()
-                return HttpResponseRedirect(reverse("restaurant:visited_restaurants"))
+                return HttpResponseRedirect(reverse("restaurant:restaurants_list"))
 
 
 class VistedRestaurantsDataView(APIView):
@@ -76,7 +77,19 @@ class VistedRestaurantsDataView(APIView):
         return Response(restaurants, status=status.HTTP_200_OK)
 
 
-class RestaurantDataView(APIView):
+class RestaurantsListView(APIView):
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+    renderer_classes = [TemplateHTMLRenderer, ]
+    template_name = 'restaurant/visited.html'
+
+    def get(self, request):
+        res_data = serializers.serialize("json", Restaurantdb.objects.all())
+        restaurants = {"restaurants": json.loads(res_data)}
+        return Response(restaurants, status=status.HTTP_200_OK)
+
+
+class RestaurantDataView(LoginRequiredMixin, APIView):
     renderer_classes = [TemplateHTMLRenderer, ]
     template_name = 'restaurant/place_display.html'
 
@@ -99,7 +112,6 @@ class RestaurantDataView(APIView):
             if rev_data.is_valid():
                 rev_data.save()
                 return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
-
 
 
 # class RestaurantApiView(APIView):

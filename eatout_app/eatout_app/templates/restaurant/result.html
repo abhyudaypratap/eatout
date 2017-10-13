@@ -6,8 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Visited Restaurants | Eat Out</title>
+    <title>Search Result | Eat Out</title>
     <!-- CORE CSS-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
     <style type="text/css">
     html,
@@ -49,6 +50,14 @@
 </head>
 
 <body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="{% url 'restaurant:restaurant_search'%}">Eat Out</a>
+        <a class="navbar-brand" href="{% url 'restaurant:restaurants_list'%}">Restaurants </a>
+    <a class="navbar-brand" href="{% url 'restaurant:visited_restaurants'%}">Visited </a>
+  </div>
+</div>
+<div class="result" style="margin-top: 50px;">
 <div>
     {%for restaurant in result%}
     <div id="profile-page-wall-posts" class="row">
@@ -72,7 +81,7 @@
                         <div class="col s5 right-align">
                             Google Rating: {{ restaurant.rating }}
                             <input type="input" name="google_rating" value="{{ restaurant.rating }}" hidden>
-                            <input type="input" name="geocode" value="{{restaurant.location.lat}},{{restaurant.location.lng}}" hidden>
+                            <input type="input" name="geocode" value='{"lat":{{restaurant.location.lat}},"lon":{{restaurant.location.lng}}}' hidden> 
                         </div>
                         <div class="col s2">
                         <button type="submit" name="store">ADD<i class="mdi-content-add-box"></i></button>
@@ -82,7 +91,7 @@
             </div>
             </div>
             </div>{% endfor %}</div>
-            <div style="height: 100%; width: 20%; position: absolute; top: 0px; right: 0px; background-color: rgb(229, 227, 223);" id="map"></div>
+            <div style="height: 100%; width: 20%; position: absolute; top: 0px; right: 0px; background-color: rgb(229, 227, 223);" id="map"></div></div>
 <!-- ================================================
   Scripts
 ================================================ -->

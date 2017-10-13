@@ -1,4 +1,4 @@
-{% load static from staticfiles %} {% load i18n %} {% load account %}
+{% load static from staticfiles %} {% load i18n %} {% load account %} {% load json_extra %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Visited Restaurants | Eat Out</title>
     <!-- CORE CSS-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
     <style type="text/css">
     html,
@@ -50,6 +51,21 @@
 
 <body>
 <div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="{% url 'restaurant:restaurant_search'%}">Eat Out</a>
+        <a class="navbar-brand" href="{% url 'restaurant:restaurants_list'%}">Restaurants </a>
+    <a class="navbar-brand" href="{% url 'restaurant:visited_restaurants'%}">Visited </a>
+  </div>
+    <div class="navbar-collapse collapse navbar-warning-collapse"><ul class="nav navbar-nav navbar-right">
+      
+      {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'account_logout'%}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login'%}">Sigin</a></li>
+                        {% endif %}
+    </ul></div>
+</div>
     {%for restaurant in restaurants%}
     <div id="profile-page-wall-posts" class="row">
         <div class="col s12">
@@ -74,26 +90,49 @@
             </div>{% endfor %}
             </div>
             <div style="height: 100%; width: 20%; position: absolute; top: 0px; right: 0px; background-color: rgb(229, 227, 223);" id="map"></div>
-    }
 <!-- ================================================
   Scripts
 ================================================ -->
             <!-- jQuery Library -->
-<script>
-var cor = "{{ restaurant.fields.geocode }}"
-var la = cor.split(",")
-function initMap() {
-    var uluru = { lat: parseFloat(la[0]), lng: parseFloat(la[1]) };
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: uluru
-    });
-    var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-    });
-}
-</script>
+    <script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: {lat: 28.5800065, lng: 77.3177433}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = [];
+        i=0
+        {%for restaurant in restaurants%}
+           var geo = JSON.parse({{restaurant.fields.geocode|to_json}});
+           console.log(geo.lat);
+           var lt=parseFloat(geo.lat)
+           var ln=parseFloat(geo.lon)
+
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lt, ln),
+            label: labels[i % labels.length]
+        });
+        markers.push(marker);
+        i=i+1
+        {% endfor %}
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXo2p1vXYi6UQ9Wp0pW_iLEKBC5a345yo&callback=initMap">
 </script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

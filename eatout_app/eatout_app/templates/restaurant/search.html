@@ -15,8 +15,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
   <style type="text/css">
 body {
-  min-height: 2000px;
   padding-top: 70px;
+}
+.navbar-form .form-control {
+
+    width: 40%;
+}
+.navbar-form {
+    margin-top: 20%;
+
 }
   </style>
   
@@ -25,19 +32,19 @@ body {
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-header">
-    <a class="navbar-brand" href="#">Eat Out</a>
+    <a class="navbar-brand" href="{% url 'restaurant:restaurant_search'%}">Eat Out</a>
+        <a class="navbar-brand" href="{% url 'restaurant:restaurants_list'%}">Restaurants </a>
+    <a class="navbar-brand" href="{% url 'restaurant:visited_restaurants'%}">Visited </a>
   </div>
 </div>
 <div class="container">
 
-
-  <!-- Navbar
-================================================== -->
   <div class="bs-docs-section clearfix">
     <div class="row">
               <form class="navbar-form" action"." method="POST">
               {% csrf_token %} 
-                <p><input name="query" type="text" class="form-control" placeholder="Search">
+              <h4> Search restaurants</h4>
+                <p><input name="query" type="text" class="form-control" placeholder="enter address to find restaurants near you">
                 <br>
                 <br>
                  <button class="btn btn-primary" type="submit">Submit</button>

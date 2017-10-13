@@ -9,8 +9,7 @@ def get_image_url(ref, h, w):
         s_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=" \
             + str(h) + "&maxwidth=" + str(w) + \
             "&photoreference=" + ref + "&key=" + google_key
-        im_url = requests.get(s_url).url
-        return im_url
+        return s_url
     else:
         return ""
 
