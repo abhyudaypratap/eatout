@@ -70,8 +70,8 @@ class RestaurantsListApiView(APIView):
 
 
 class RestaurantDataApiView(APIView):
-    """Api outputs all the data about the restaurant stored in database
-    """
+    """Api outputs all the data about the restaurant stored in database."""
+
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
@@ -100,6 +100,7 @@ class RestaurantDataApiView(APIView):
 
 class VistedRestaurantsStoreApiView(APIView):
     """Record the user feedback of visiting the restaurant."""
+
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
@@ -120,9 +121,8 @@ class VistedRestaurantsStoreApiView(APIView):
 
 
 class VoteDownApiView(APIView):
-    """Voting down the restaurant resulting user will not find the
-    restaurants again in the list
-    ."""
+    """Voting down the restaurant resulting user will not find the restaurants
+    again in the list."""
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
