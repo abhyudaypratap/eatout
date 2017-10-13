@@ -72,7 +72,7 @@ class VistedRestaurantsDataView(APIView):
 
 class RestaurantsListView(APIView):
     renderer_classes = [TemplateHTMLRenderer, ]
-    template_name = 'restaurant/visited.html'
+    template_name = 'restaurant/list.html'
 
     def get(self, request):
         res_data = serializers.serialize("json", Restaurantdb.objects.all())
@@ -114,10 +114,10 @@ class VistedRestaurantsStoreView(LoginRequiredMixin, APIView):
             restaurant_id=request.data.get("r_id"))
         data = VisitedRes.objects.get_or_create(
             registered_user=request.user, restaurant=res_data, defaults={"visted": 1})
+        res_data.visted = res_data.visted + 1
+        res_data.save()
         if not data[1]:
             data[0].visted = data[0].visted + 1
-            res_data.visted = res_data.visted + 1
-            res_data.save()
             data[0].save()
         return HttpResponseRedirect(reverse("restaurant:restaurant_info", args=[request.data.get("r_id")]))
 
