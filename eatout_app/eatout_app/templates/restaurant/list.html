@@ -86,7 +86,7 @@
                             Google Rating: {{ restaurant.fields.google_rating }}
                             <form action="{% url 'restaurant:visited_restaurant_save' %}" method="POST">
                             {% csrf_token %}
-                            <button type="submit" name="store">Visited</button>
+                            <button class="btn waves-effect waves-light" type="submit" name="store">Visited</button>
                             <input type="text" name="r_id" value="{{restaurant.pk}}" hidden />
                         </form>
                         </div>

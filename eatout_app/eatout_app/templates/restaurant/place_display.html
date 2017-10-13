@@ -85,7 +85,7 @@
             </form>
                 <form action="{% url 'restaurant:visited_restaurant_save' %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" name="store">Visited</button>
+                <button class="btn btn-primary" type="submit" name="store">Visited</button>
                 <input type="text" name="r_id" value="{{restaurant.pk}}" hidden />
             </form>
                 </div>
@@ -97,7 +97,7 @@
             <form action="." method="POST">
                 {% csrf_token %}
                 <input type="text" name="reviews" placeholder="new review" />
-                <button type="submit" name="store">New review</button>
+                <button class="btn btn-primary" type="submit" name="store">New review</button>
             </form>
         </div>
     </div>
@@ -121,7 +121,7 @@
                     {% csrf_token %}
                     <input type="text" name="comments" placeholder="new comment" />
                     <input type="text" name="reviews" value="{{review.id}}" hidden />
-                    <button type="submit" name="store">New comment</button>
+                    <button class="btn btn-primary" type="submit" name="store">New comment</button>
                 </form>
             </div>
             {% endfor %}
