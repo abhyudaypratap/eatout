@@ -8,3 +8,6 @@ __pycache__/
 
 # Virtualenv
 venv/
+
+#media
+media/

@@ -98,8 +98,6 @@ class VistedRestaurantsStoreView(LoginRequiredMixin, APIView):
 
 
 class RestaurantsListView(APIView):
-    # authentication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer, ]
     template_name = 'restaurant/visited.html'
 
@@ -132,11 +130,3 @@ class RestaurantDataView(LoginRequiredMixin, APIView):
             if rev_data.is_valid():
                 rev_data.save()
                 return HttpResponseRedirect(reverse("restaurant:restaurant", args=[slug]))
-
-
-# class RestaurantApiView(APIView):
-
-#     def post(self, request, *args, **kwargs):
-
-#         review = request.data.get("coordinates")
-#         user = request

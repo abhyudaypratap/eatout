@@ -60,7 +60,7 @@
     <div class="navbar-collapse collapse navbar-warning-collapse"><ul class="nav navbar-nav navbar-right">
       
       {% if request.user.is_authenticated %}
-      <li><a href="{% url 'account_logout'%}">{{request.user.username}}</a></li>
+      <li><a href="{% url 'user:user_data'%}">{{request.user.username}}</a></li>
                         <li><a href="{% url 'account_logout'%}">Logout</a></li>
                         {% else %}
                         <li><a href="{% url 'account_login'%}">Sigin</a></li>

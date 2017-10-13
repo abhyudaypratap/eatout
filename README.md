@@ -1,6 +1,12 @@
 # eatout
  Django app that helps to decide where the team should dine.
 
+App has the following features
+User can search restaurants near him(count - 20)
+User  will be able to add restaurant to Database from search results
+User can view added restaurants and there information like address, name etc.
+Each restaurant can be marked as visited
+User can write reviews for each restaurant added and other user can comment on the same. 
 
 # Setup
 

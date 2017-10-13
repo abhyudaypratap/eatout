@@ -56,7 +56,7 @@
   <div class="navbar-collapse collapse navbar-warning-collapse"><ul class="nav navbar-nav navbar-right">
       
       {% if request.user.is_authenticated %}
-      <li><a href="{% url 'account_logout'%}">{{request.user.username}}</a></li>
+      <li><a href="{% url 'user:user_data'%}">{{request.user.username}}</a></li>
                         <li><a href="{% url 'account_logout'%}">Logout</a></li>
                         {% else %}
                         <li><a href="{% url 'account_login'%}">Sigin</a></li>
@@ -99,7 +99,7 @@
         <div class="card-action row">
             <h4>Reviews</h4>
             {%for review in restaurant.reviews.all %}
-            <div><h5>{{ review.reviews }}</h5></div>
+            <div><h5>{{ review.reviews }}</h5></p><p style="margin-left: 70px; color:#189643">{{ review.registered_user }}{% ifequal request.user.username review.registered_user.username %}<i class="mdi-action-star-rate"></i>{% endifequal%}</p></div>
             <div id="comments"> 
     <details>
         <summary>
@@ -108,7 +108,7 @@
                 {%for comment in review.comments.all %}
                 <div class="content">
             <p>
-        {{ comment.comments }}</p>
+        {{ comment.comments }}</p><p style="margin-left: 70px; color:#ee6e73">{{ comment.registered_user }}{% ifequal request.user.username comment.registered_user.username %}<i class="mdi-action-star-rate"></i>{% endifequal%}</p>
         </div>
                 {%endfor%}</details>
                 <form action="." method="POST">

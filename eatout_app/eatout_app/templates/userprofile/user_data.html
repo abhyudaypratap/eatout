@@ -68,7 +68,7 @@
         <div class="card-profile-title">
             <div class="row">
                 <div class="col s1">
-                    <img src={{ user.pk }} alt="" class="square responsive-img valign profile-post-uer-image">
+                    <img src="/media/{{ user.profile_pic }}" alt="" class="square responsive-img valign profile-post-uer-image">
                 </div>
                 <div class="col s2 right-align">
                     <p class="grey-text text-darken-4 margin">{{ user.user.username }}</p>
@@ -93,7 +93,7 @@
             
 
             
-            <h5>{{ review.restaurant.name }}</h5>
+            <h5><a href="http://{{ request.get_host }}/restaurant/display/{{ review.restaurant.pk }}"><p class="grey-text text-darken-4 margin">{{ review.restaurant.name }}</p></a></h5>
             <div><h6>{{ review.reviews }}</h6></div>
             <div id="comments"> 
     <details>
