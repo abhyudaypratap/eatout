@@ -5,6 +5,13 @@ from settings.common import google_key
 
 
 def get_image_url(ref, h, w):
+    """
+    Input:
+        Photoreference id
+        Width and Height of Image
+    Output:
+        Returns concatenated url with width and height
+    """
     if ref:
         s_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=" \
             + str(h) + "&maxwidth=" + str(w) + \
@@ -15,6 +22,12 @@ def get_image_url(ref, h, w):
 
 
 def crestaurantlist(r_data):
+    """
+    Input:
+        Restaurant list obtained from google place api using coordinates
+    Output:
+        Returns a list of dict with properties of restaurant
+    """
     l_data = []
     restaurant_data = {}
     image = ""
@@ -38,6 +51,12 @@ def crestaurantlist(r_data):
 
 
 def qrestaurantlist(r_data):
+    """
+    Input:
+        Restaurant list obtained from google place api using text
+    Output:
+        Returns a list of dict with properties of restaurant
+    """
     l_data = []
     restaurant_data = {}
     image = ""
@@ -63,8 +82,13 @@ def qrestaurantlist(r_data):
 
 
 def searchbycordinates(coordinates):
-    """Searching a restaurant using User provide latitude and longtiude"""
-    # Searching using Google Places API Web Service
+    """Searching a restaurant using User provide latitude and longtiude
+    Searching using Google Places API Web Service
+    Input:
+        Latitude and Longtitude of a location
+    Output:
+        List of dict with restaurtants  information
+    """
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + \
         coordinates + "&opennow=true&rankby=distance&types=restaurant&key=" + google_key
     search_data = requests.get(url)
@@ -75,8 +99,13 @@ def searchbycordinates(coordinates):
 
 
 def searchbyquery(query, coordinates):
-    """Searching a restaurant using User provide latitude and longtiude"""
-    # Searching using Google Places API Web Service
+    """Searching a restaurant using User query
+    Searching using Google Places API Web Service
+    Input:
+        Text: query made by user
+    Output:
+        List of dict with restaurtants  information
+    """
     loc = ""
     if coordinates:
         loc = "&location=" + coordinates
